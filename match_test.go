@@ -58,3 +58,23 @@ func TestMatch(t *testing.T) {
 		}
 	}
 }
+
+func TestState(t *testing.T) {
+	sm := New[int]()
+
+	sm.AddString("abcde", 1)
+
+	if state := sm.MatchState("b"); state != (State[int]{sm, 0}) {
+		t.Errorf("test 1: expecting state 0, got %d", state.state)
+	}
+
+	if state := sm.MatchState("a"); state != (State[int]{sm, 2}) {
+		t.Errorf("test 2: expecting state 2, got %d", state.state)
+	} else if state = state.MatchState("b"); state != (State[int]{sm, 3}) {
+		t.Errorf("test 3: expecting state 3, got %d", state.state)
+	} else if v := state.Match("c"); v != 0 {
+		t.Errorf("test 4: expecting value 0, got %d", v)
+	} else if v := state.Match("cde"); v != 1 {
+		t.Errorf("test 5: expecting value 1, got %d", v)
+	}
+}
