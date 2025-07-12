@@ -6,10 +6,11 @@ import (
 	"vimagination.zapto.org/parser"
 )
 
-func TestStringTokeniser(t *testing.T) {
+func TestTokeniser(t *testing.T) {
 	for n, test := range [...]struct {
-		Input  string
-		Output []parser.Token
+		Input        string
+		Output       []parser.Token
+		InitialState parser.TokenFunc
 	}{
 		{
 			"",
@@ -18,6 +19,7 @@ func TestStringTokeniser(t *testing.T) {
 				{Type: tokenEnd, Data: ""},
 				{Type: parser.TokenDone, Data: ""},
 			},
+			simpleStart,
 		},
 		{
 			"a",
@@ -27,6 +29,7 @@ func TestStringTokeniser(t *testing.T) {
 				{Type: tokenEnd, Data: ""},
 				{Type: parser.TokenDone, Data: ""},
 			},
+			simpleStart,
 		},
 		{
 			"abc",
@@ -38,11 +41,12 @@ func TestStringTokeniser(t *testing.T) {
 				{Type: tokenEnd, Data: ""},
 				{Type: parser.TokenDone, Data: ""},
 			},
+			simpleStart,
 		},
 	} {
 		p := parser.NewStringTokeniser(test.Input)
 
-		p.TokeniserState(simpleStart)
+		p.TokeniserState(test.InitialState)
 
 		for m, tkn := range test.Output {
 			if tk, _ := p.GetToken(); tk.Type != tkn.Type {
