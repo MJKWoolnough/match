@@ -1,6 +1,10 @@
 package match
 
-import "vimagination.zapto.org/parser"
+import (
+	"unsafe"
+
+	"vimagination.zapto.org/parser"
+)
 
 func parse(str string, fn parser.TokenFunc) (*or, error) {
 	tk := parser.NewStringTokeniser(str)
@@ -50,22 +54,35 @@ func (s *sequence) parse(p *parser.Parser) error {
 			return err
 		}
 
+		if p.Accept(tokenRepeat) {
+			pt.partType = partMany
+		}
+
 		s.parts = append(s.parts, pt)
 	}
 
 	return nil
 }
 
+type partType uint8
+
+const (
+	partOne partType = iota
+	partMany
+	partStart
+	partEnd
+)
+
 type part struct {
-	start, end bool
-	char       *char
+	partType
+	char *char
 }
 
 func (pt *part) parse(p *parser.Parser) error {
 	if p.Accept(tokenStart) {
-		pt.start = true
+		pt.partType = partStart
 	} else if p.Accept(tokenEnd) {
-		pt.end = true
+		pt.partType = partEnd
 	} else {
 		pt.char = new(char)
 
@@ -78,7 +95,8 @@ func (pt *part) parse(p *parser.Parser) error {
 }
 
 type char struct {
-	char string
+	invert bool
+	char   [256]bool
 }
 
 func (c *char) parse(p *parser.Parser) error {
@@ -86,9 +104,13 @@ func (c *char) parse(p *parser.Parser) error {
 
 	if tk.Type == parser.TokenError {
 		return p.GetError()
+	} else if tk.Type == tokenAnyChar {
+		c.invert = true
 	}
 
-	c.char = tk.Data
+	for _, b := range unsafe.Slice(unsafe.StringData(tk.Data), len(tk.Data)) {
+		c.char[b] = true
+	}
 
 	return nil
 }

@@ -23,10 +23,10 @@ func TestStructure(t *testing.T) {
 					{
 						parts: []part{
 							{
-								start: true,
+								partType: partStart,
 							},
 							{
-								end: true,
+								partType: partEnd,
 							},
 						},
 					},
@@ -41,7 +41,7 @@ func TestStructure(t *testing.T) {
 					{
 						parts: []part{
 							{
-								start: true,
+								partType: partStart,
 							},
 							{
 								char: &char{
@@ -49,7 +49,7 @@ func TestStructure(t *testing.T) {
 								},
 							},
 							{
-								end: true,
+								partType: partEnd,
 							},
 						},
 					},
@@ -64,7 +64,7 @@ func TestStructure(t *testing.T) {
 					{
 						parts: []part{
 							{
-								start: true,
+								partType: partStart,
 							},
 							{
 								char: &char{
@@ -82,7 +82,7 @@ func TestStructure(t *testing.T) {
 								},
 							},
 							{
-								end: true,
+								partType: partEnd,
 							},
 						},
 					},
