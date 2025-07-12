@@ -12,7 +12,7 @@ func TestTokeniser(t *testing.T) {
 		Output       []parser.Token
 		InitialState parser.TokenFunc
 	}{
-		{
+		{ // 1
 			"",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -21,7 +21,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			simpleStart,
 		},
-		{
+		{ // 2
 			"a",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -31,7 +31,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			simpleStart,
 		},
-		{
+		{ // 3
 			"abc",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -43,7 +43,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			simpleStart,
 		},
-		{
+		{ // 4
 			"",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -52,7 +52,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			partialStringStart,
 		},
-		{
+		{ // 5
 			"a",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -62,7 +62,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			partialStringStart,
 		},
-		{
+		{ // 6
 			"abc",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -74,7 +74,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			partialStringStart,
 		},
-		{
+		{ // 7
 			"*",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -85,7 +85,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			partialStringStart,
 		},
-		{
+		{ // 8
 			"*abc",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
@@ -99,7 +99,7 @@ func TestTokeniser(t *testing.T) {
 			},
 			partialStringStart,
 		},
-		{
+		{ // 9
 			"*abc*",
 			[]parser.Token{
 				{Type: tokenStart, Data: ""},
