@@ -89,6 +89,200 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
+		{
+			Input:     "",
+			Tokeniser: partialStringStart,
+			Output: &or{
+				sequences: []sequence{
+					{
+						parts: []part{
+							{
+								partType: partStart,
+							},
+							{
+								partType: partEnd,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			Input:     "a",
+			Tokeniser: partialStringStart,
+			Output: &or{
+				sequences: []sequence{
+					{
+						parts: []part{
+							{
+								partType: partStart,
+							},
+							{
+								char: &char{
+									char: [256]bool{'a': true},
+								},
+							},
+							{
+								partType: partEnd,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			Input:     "abc",
+			Tokeniser: partialStringStart,
+			Output: &or{
+				sequences: []sequence{
+					{
+						parts: []part{
+							{
+								partType: partStart,
+							},
+							{
+								char: &char{
+									char: [256]bool{'a': true},
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'b': true},
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'c': true},
+								},
+							},
+							{
+								partType: partEnd,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			Input:     "*",
+			Tokeniser: partialStringStart,
+			Output: &or{
+				sequences: []sequence{
+					{
+						parts: []part{
+							{
+								partType: partStart,
+							},
+							{
+								partType: partMany,
+								char: &char{
+									invert: true,
+								},
+							},
+							{
+								partType: partEnd,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			Input:     "*abc",
+			Tokeniser: partialStringStart,
+			Output: &or{
+				sequences: []sequence{
+					{
+						parts: []part{
+							{
+								partType: partStart,
+							},
+							{
+								partType: partMany,
+								char: &char{
+									invert: true,
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'a': true},
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'b': true},
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'c': true},
+								},
+							},
+							{
+								partType: partEnd,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			Input:     "*a*b*c*",
+			Tokeniser: partialStringStart,
+			Output: &or{
+				sequences: []sequence{
+					{
+						parts: []part{
+							{
+								partType: partStart,
+							},
+							{
+								partType: partMany,
+								char: &char{
+									invert: true,
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'a': true},
+								},
+							},
+							{
+								partType: partMany,
+								char: &char{
+									invert: true,
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'b': true},
+								},
+							},
+							{
+								partType: partMany,
+								char: &char{
+									invert: true,
+								},
+							},
+							{
+								char: &char{
+									char: [256]bool{'c': true},
+								},
+							},
+							{
+								partType: partMany,
+								char: &char{
+									invert: true,
+								},
+							},
+							{
+								partType: partEnd,
+							},
+						},
+					},
+				},
+			},
+		},
 	} {
 		o, err := parse(test.Input, test.Tokeniser)
 		if !errors.Is(err, test.Err) {
