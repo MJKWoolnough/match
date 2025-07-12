@@ -43,6 +43,78 @@ func TestTokeniser(t *testing.T) {
 			},
 			simpleStart,
 		},
+		{
+			"",
+			[]parser.Token{
+				{Type: tokenStart, Data: ""},
+				{Type: tokenEnd, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			partialStringStart,
+		},
+		{
+			"a",
+			[]parser.Token{
+				{Type: tokenStart, Data: ""},
+				{Type: tokenChar, Data: "a"},
+				{Type: tokenEnd, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			partialStringStart,
+		},
+		{
+			"abc",
+			[]parser.Token{
+				{Type: tokenStart, Data: ""},
+				{Type: tokenChar, Data: "a"},
+				{Type: tokenChar, Data: "b"},
+				{Type: tokenChar, Data: "c"},
+				{Type: tokenEnd, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			partialStringStart,
+		},
+		{
+			"*",
+			[]parser.Token{
+				{Type: tokenStart, Data: ""},
+				{Type: tokenAnyChar, Data: ""},
+				{Type: tokenRepeat, Data: "*"},
+				{Type: tokenEnd, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			partialStringStart,
+		},
+		{
+			"*abc",
+			[]parser.Token{
+				{Type: tokenStart, Data: ""},
+				{Type: tokenAnyChar, Data: ""},
+				{Type: tokenRepeat, Data: "*"},
+				{Type: tokenChar, Data: "a"},
+				{Type: tokenChar, Data: "b"},
+				{Type: tokenChar, Data: "c"},
+				{Type: tokenEnd, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			partialStringStart,
+		},
+		{
+			"*abc*",
+			[]parser.Token{
+				{Type: tokenStart, Data: ""},
+				{Type: tokenAnyChar, Data: ""},
+				{Type: tokenRepeat, Data: "*"},
+				{Type: tokenChar, Data: "a"},
+				{Type: tokenChar, Data: "b"},
+				{Type: tokenChar, Data: "c"},
+				{Type: tokenAnyChar, Data: ""},
+				{Type: tokenRepeat, Data: "*"},
+				{Type: tokenEnd, Data: ""},
+				{Type: parser.TokenDone, Data: ""},
+			},
+			partialStringStart,
+		},
 	} {
 		p := parser.NewStringTokeniser(test.Input)
 
