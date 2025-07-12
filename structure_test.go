@@ -15,7 +15,7 @@ func TestStructure(t *testing.T) {
 		Err       error
 		Output    *or
 	}{
-		{
+		{ // 1
 			Input:     "",
 			Tokeniser: simpleStart,
 			Output: &or{
@@ -33,7 +33,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 2
 			Input:     "a",
 			Tokeniser: simpleStart,
 			Output: &or{
@@ -56,7 +56,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 3
 			Input:     "abc",
 			Tokeniser: simpleStart,
 			Output: &or{
@@ -89,7 +89,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 4
 			Input:     "",
 			Tokeniser: partialStringStart,
 			Output: &or{
@@ -107,7 +107,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 5
 			Input:     "a",
 			Tokeniser: partialStringStart,
 			Output: &or{
@@ -130,7 +130,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 6
 			Input:     "abc",
 			Tokeniser: partialStringStart,
 			Output: &or{
@@ -163,7 +163,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 7
 			Input:     "*",
 			Tokeniser: partialStringStart,
 			Output: &or{
@@ -187,7 +187,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 8
 			Input:     "*abc",
 			Tokeniser: partialStringStart,
 			Output: &or{
@@ -226,7 +226,7 @@ func TestStructure(t *testing.T) {
 				},
 			},
 		},
-		{
+		{ // 9
 			Input:     "*a*b*c*",
 			Tokeniser: partialStringStart,
 			Output: &or{
