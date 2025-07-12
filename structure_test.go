@@ -4,16 +4,20 @@ import (
 	"errors"
 	"reflect"
 	"testing"
+
+	"vimagination.zapto.org/parser"
 )
 
 func TestStructure(t *testing.T) {
 	for n, test := range [...]struct {
-		Input  string
-		Err    error
-		Output *or
+		Input     string
+		Tokeniser parser.TokenFunc
+		Err       error
+		Output    *or
 	}{
 		{
-			Input: "",
+			Input:     "",
+			Tokeniser: simpleStart,
 			Output: &or{
 				sequences: []sequence{
 					{
@@ -30,7 +34,8 @@ func TestStructure(t *testing.T) {
 			},
 		},
 		{
-			Input: "a",
+			Input:     "a",
+			Tokeniser: simpleStart,
 			Output: &or{
 				sequences: []sequence{
 					{
@@ -40,7 +45,7 @@ func TestStructure(t *testing.T) {
 							},
 							{
 								char: &char{
-									char: "a",
+									char: [256]bool{'a': true},
 								},
 							},
 							{
@@ -52,7 +57,8 @@ func TestStructure(t *testing.T) {
 			},
 		},
 		{
-			Input: "abc",
+			Input:     "abc",
+			Tokeniser: simpleStart,
 			Output: &or{
 				sequences: []sequence{
 					{
@@ -62,17 +68,17 @@ func TestStructure(t *testing.T) {
 							},
 							{
 								char: &char{
-									char: "a",
+									char: [256]bool{'a': true},
 								},
 							},
 							{
 								char: &char{
-									char: "b",
+									char: [256]bool{'b': true},
 								},
 							},
 							{
 								char: &char{
-									char: "c",
+									char: [256]bool{'c': true},
 								},
 							},
 							{
@@ -84,7 +90,7 @@ func TestStructure(t *testing.T) {
 			},
 		},
 	} {
-		o, err := parse(test.Input)
+		o, err := parse(test.Input, test.Tokeniser)
 		if !errors.Is(err, test.Err) {
 			t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
 		} else if !reflect.DeepEqual(o, test.Output) {

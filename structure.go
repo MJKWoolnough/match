@@ -2,10 +2,10 @@ package match
 
 import "vimagination.zapto.org/parser"
 
-func parse(str string) (*or, error) {
+func parse(str string, fn parser.TokenFunc) (*or, error) {
 	tk := parser.NewStringTokeniser(str)
 
-	tk.TokeniserState(simpleStart)
+	tk.TokeniserState(fn)
 
 	p := parser.New(tk)
 
