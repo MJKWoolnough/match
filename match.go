@@ -24,7 +24,7 @@ func (s *StateMachine[T]) compile(state uint32, data []byte, value T) error {
 	if len(data) == 0 {
 		var d T
 
-		if s.states[state].value != d {
+		if currState := s.states[state].value; currState != d && currState != value {
 			return ErrAmbiguous
 		}
 
