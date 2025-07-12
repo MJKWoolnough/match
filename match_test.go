@@ -19,16 +19,16 @@ func TestMatch(t *testing.T) {
 		Match   []string
 		NoMatch []string
 	}{
-		{
+		{ // 1
 			Add:     "abc",
 			Match:   []string{"abc"},
 			NoMatch: []string{"ab", "abd", "abcd"},
 		},
-		{
+		{ // 1
 			Add: "abc",
 			Err: ErrAmbiguous,
 		},
-		{
+		{ // 1
 			Add:     "def",
 			Match:   []string{"def"},
 			NoMatch: []string{"ab", "abd", "abcd", "de", "deg", "defg"},
