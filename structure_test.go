@@ -13,15 +13,15 @@ func TestStructure(t *testing.T) {
 		Input     string
 		Tokeniser parser.TokenFunc
 		Err       error
-		Output    *or
+		Output    *or[byte]
 	}{
 		{ // 1
 			Input:     "",
 			Tokeniser: simpleStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
@@ -36,15 +36,15 @@ func TestStructure(t *testing.T) {
 		{ // 2
 			Input:     "a",
 			Tokeniser: simpleStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'a': true},
 								},
 							},
@@ -59,25 +59,25 @@ func TestStructure(t *testing.T) {
 		{ // 3
 			Input:     "abc",
 			Tokeniser: simpleStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'a': true},
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'b': true},
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'c': true},
 								},
 							},
@@ -92,10 +92,10 @@ func TestStructure(t *testing.T) {
 		{ // 4
 			Input:     "",
 			Tokeniser: partialStringStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
@@ -110,15 +110,15 @@ func TestStructure(t *testing.T) {
 		{ // 5
 			Input:     "a",
 			Tokeniser: partialStringStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'a': true},
 								},
 							},
@@ -133,25 +133,25 @@ func TestStructure(t *testing.T) {
 		{ // 6
 			Input:     "abc",
 			Tokeniser: partialStringStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'a': true},
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'b': true},
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'c': true},
 								},
 							},
@@ -166,16 +166,16 @@ func TestStructure(t *testing.T) {
 		{ // 7
 			Input:     "*",
 			Tokeniser: partialStringStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
 								partType: partMany,
-								char: &char{
+								char: &char[byte]{
 									invert: true,
 								},
 							},
@@ -190,31 +190,31 @@ func TestStructure(t *testing.T) {
 		{ // 8
 			Input:     "*abc",
 			Tokeniser: partialStringStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
 								partType: partMany,
-								char: &char{
+								char: &char[byte]{
 									invert: true,
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'a': true},
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'b': true},
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'c': true},
 								},
 							},
@@ -229,49 +229,49 @@ func TestStructure(t *testing.T) {
 		{ // 9
 			Input:     "*a*b*c*",
 			Tokeniser: partialStringStart,
-			Output: &or{
-				sequences: []sequence{
+			Output: &or[byte]{
+				sequences: []sequence[byte]{
 					{
-						parts: []part{
+						parts: []part[byte]{
 							{
 								partType: partStart,
 							},
 							{
 								partType: partMany,
-								char: &char{
+								char: &char[byte]{
 									invert: true,
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'a': true},
 								},
 							},
 							{
 								partType: partMany,
-								char: &char{
+								char: &char[byte]{
 									invert: true,
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'b': true},
 								},
 							},
 							{
 								partType: partMany,
-								char: &char{
+								char: &char[byte]{
 									invert: true,
 								},
 							},
 							{
-								char: &char{
+								char: &char[byte]{
 									char: [256]bool{'c': true},
 								},
 							},
 							{
 								partType: partMany,
-								char: &char{
+								char: &char[byte]{
 									invert: true,
 								},
 							},
@@ -284,7 +284,7 @@ func TestStructure(t *testing.T) {
 			},
 		},
 	} {
-		o, err := parse(test.Input, test.Tokeniser)
+		o, err := parse[byte](test.Input, test.Tokeniser)
 		if !errors.Is(err, test.Err) {
 			t.Errorf("test %d: expecting error %v, got %v", n+1, test.Err, err)
 		} else if !reflect.DeepEqual(o, test.Output) {
