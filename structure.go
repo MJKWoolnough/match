@@ -140,7 +140,7 @@ func (pt *part[T]) parse(p *parser.Parser) error {
 
 func (pt *part[T]) compile(sm *StateMachine[T], state uint32, visited visitedSet, value T) ([]*uint32, error) {
 	switch pt.partType {
-	case partOne:
+	case partOne, partMany:
 		return pt.char.compile(sm, state, visited, value)
 	case partStart:
 		if len(visited) == 0 {
