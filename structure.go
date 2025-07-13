@@ -181,5 +181,11 @@ func (c *char[T]) parse(p *parser.Parser) error {
 }
 
 func (c *char[T]) compile(sm *StateMachine[T], state uint32, visited visitedSet, value T) ([]*uint32, error) {
+	for b, v := range c.char {
+		if v {
+			return []*uint32{&sm.states[state].states[b]}, nil
+		}
+	}
+
 	return nil, nil
 }
