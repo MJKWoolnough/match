@@ -82,7 +82,30 @@ func (s *sequence[T]) parse(p *parser.Parser) error {
 }
 
 func (s *sequence[T]) compile(sm *StateMachine[T], state uint32, visited visitedSet, value T) ([]*uint32, error) {
-	return nil, nil
+	var (
+		ends = []*uint32{}
+		err  error
+	)
+
+	for _, pt := range s.parts {
+		if ends == nil {
+			break
+		} else if len(ends) == 1 {
+			if *ends[0] == 0 {
+				*ends[0] = uint32(len(sm.states))
+				sm.states = append(sm.states, stateValue[T]{})
+			}
+
+			state = *ends[0]
+		}
+
+		ends, err = pt.compile(sm, state, visited, value)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return ends, nil
 }
 
 type partType uint8
