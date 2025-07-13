@@ -41,7 +41,18 @@ func (o *or[T]) parse(p *parser.Parser) error {
 }
 
 func (o *or[T]) compile(sm *StateMachine[T], state uint32, visited visitedSet, value T) ([]*uint32, error) {
-	return nil, nil
+	var ends []*uint32
+
+	for _, seq := range o.sequences {
+		seqEnds, err := seq.compile(sm, state, visited, value)
+		if err != nil {
+			return nil, err
+		}
+
+		ends = append(ends, seqEnds...)
+	}
+
+	return ends, nil
 }
 
 type sequence[T comparable] struct {
