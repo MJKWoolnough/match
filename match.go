@@ -20,34 +20,15 @@ func New[T comparable]() *StateMachine[T] {
 	}
 }
 
-func (s *StateMachine[T]) compile(state uint32, data []byte, value T) error {
-	if len(data) == 0 {
-		var d T
-
-		if currState := s.states[state].value; currState != d && currState != value {
-			return ErrAmbiguous
-		}
-
-		s.states[state].value = value
-
-		return nil
-	}
-
-	c := data[0]
-	data = data[1:]
-
-	next := s.states[state].states[c]
-	if next == 0 {
-		next = uint32(len(s.states))
-		s.states = append(s.states, stateValue[T]{})
-		s.states[state].states[c] = next
-	}
-
-	return s.compile(next, data, value)
-}
-
 func (s *StateMachine[T]) AddString(str string, value T) error {
-	return s.compile(1, strToBytes(str), value)
+	o, err := parse[T](str, simpleStart)
+	if err != nil {
+		return err
+	}
+
+	_, err = o.compile(s, 1, make(visitedSet), value)
+
+	return err
 }
 
 func (s *StateMachine[T]) Match(str string) T {
